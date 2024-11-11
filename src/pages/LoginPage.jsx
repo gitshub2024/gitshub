@@ -1,83 +1,93 @@
+// LoginPage.jsx
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { auth, provider, db } from '../firebaseConfig';
+import { signInWithPopup } from 'firebase/auth';
+import { getDoc, doc } from 'firebase/firestore';
+
+// Import the Google logo
+import googleLogo from '../assets/gooogle.png';
 
 function LoginPage() {
   const navigate = useNavigate();
-  const [selectedAccount, setSelectedAccount] = useState(null);
-  
-  const accounts = [
-    {
-      id: 1,
-      email: 'user1@example.com',
-      avatar: 'https://via.placeholder.com/50',
-      name: 'Aswin Kumar'
-    },
-    {
-      id: 2,
-      email: 'user2@example.com',
-      avatar: 'https://via.placeholder.com/50',
-      name: 'Fida Fathima N'
-    },
+  const [error, setError] = useState(null);
 
-    {
-      id: 3,
-      email: 'user3@example.com',
-      avatar: 'https://via.placeholder.com/50',
-      name: 'Ashish George'
-    },
-    {
-      id: 4,
-      email: 'user4@example.com',
-      avatar: 'https://via.placeholder.com/50',
-      name: 'A Nishok Perumal'
-    },
-  ];
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
 
-  const handleLogin = () => {
-    if (selectedAccount) {
-      // In a real app, you'd handle authentication here
-      // For now, we'll just simulate login by storing user info in localStorage
-      localStorage.setItem('user', JSON.stringify(selectedAccount));
-      navigate('/home');
+      // Check if the email domain is saintgits.org
+      if (user.email.endsWith('@saintgits.org')) {
+        // Check if user exists in Firestore
+        const userDocRef = doc(db, 'users', user.email);
+        const userDoc = await getDoc(userDocRef);
+
+        if (userDoc.exists()) {
+          // User exists, proceed to log them in
+          const userData = userDoc.data();
+
+          // Store user info in localStorage
+          localStorage.setItem(
+            'user',
+            JSON.stringify({
+              id: user.uid,
+              name: `${userData.firstName} ${userData.lastName}`,
+              email: user.email,
+              avatar:
+                userData.avatar ||
+                user.photoURL ||
+                'https://via.placeholder.com/50',
+            })
+          );
+
+          // Navigate to the HomePage
+          navigate('/home');
+        } else {
+          // User does not exist
+          setError('User does not exist. Please sign up first.');
+          auth.signOut(); // Sign out the user
+          // Optionally, navigate to the sign-up page
+          navigate('/signup');
+        }
+      } else {
+        // Display an error if the email domain is not saintgits.org
+        setError(
+          "Only users with a 'saintgits.org' email address can access this site."
+        );
+        auth.signOut(); // Sign out the user
+      }
+    } catch (error) {
+      console.error('Error during login:', error);
+      setError('Failed to login. Please try again.');
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-4 bg-primary">
-      <div className="bg-white/5 rounded-xl p-8 w-full max-w-md backdrop-blur-sm">
-        <h2 className="text-3xl text-accent mb-8 text-center">Login</h2>
-        <div className="space-y-4">
-          {accounts.map(account => (
-            <div 
-              key={account.id}
-              className={`flex items-center p-4 rounded-lg cursor-pointer transition-all duration-300
-                ${selectedAccount?.id === account.id 
-                  ? 'bg-accent/20 border-2 border-accent' 
-                  : 'bg-white/10 hover:bg-white/20'}`}
-              onClick={() => setSelectedAccount(account)}
-            >
-              <img 
-                src={account.avatar} 
-                alt="Profile" 
-                className="w-12 h-12 rounded-full mr-4"
-              />
-              <div className="flex flex-col">
-                <span className="text-white">{account.name}</span>
-                <span className="text-secondary text-sm">{account.email}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-        <button 
-          className={`btn w-full mt-6 ${
-            selectedAccount 
-              ? 'btn-primary' 
-              : 'bg-secondary/50 cursor-not-allowed'
-          }`}
-          onClick={handleLogin}
-          disabled={!selectedAccount}
+    <div
+      className="flex items-center justify-center min-h-screen bg-cover bg-center"
+      style={{ backgroundImage: 'url(/assets/login-background.jpg)' }}
+    >
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black bg-opacity-60"></div>
+
+      {/* Content */}
+      <div className="relative z-10 bg-[#181C14]/80 backdrop-blur-sm rounded-xl p-8 w-full max-w-md text-[#ECDFCC]">
+        <h2 className="text-4xl font-bold mb-8 text-center">Welcome Back</h2>
+        {error && (
+          <p className="text-red-500 mb-4 text-center">{error}</p>
+        )}
+        <button
+          className="w-full flex items-center justify-center space-x-4 bg-[#697565] text-[#ECDFCC] py-3 rounded-lg hover:bg-[#55614D] transition"
+          onClick={handleGoogleLogin}
         >
-          Login
+          <img
+            src={googleLogo}
+            alt="Google Icon"
+            className="w-6 h-6"
+          />
+          <span className="font-medium">Login with Google</span>
         </button>
       </div>
     </div>
