@@ -1,0 +1,22 @@
+@import url('https://fonts.googleapis.com/css2?family=Jockey+One&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-primary font-jockey text-white;
+}
+
+.btn {
+  @apply px-6 py-2 rounded-lg transition-all duration-300 font-jockey;
+}
+
+.btn-primary {
+  @apply bg-accent text-primary hover:bg-secondary hover:text-white;
+}
+
+.input-field {
+  @apply w-full px-4 py-2 rounded-lg bg-white/10 border border-secondary 
+  focus:outline-none focus:border-accent text-white;
+}
