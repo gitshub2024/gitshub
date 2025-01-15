@@ -2,11 +2,8 @@
 
 import React from 'react';
 
-// Import images of alumni
-import ashishImage from '../assets/ashish.jpg';
-import aswinImage from '../assets/aswin.jpg';
-import fidaImage from '../assets/fido.jpg';
-import nishokImage from '../assets/nishok.jpg';
+// Import default account logo
+import defaultAccountLogo from '../assets/default-avatar-icon-of-social-media-user-vector.jpg';
 
 // Import company logos
 import googleLogo from '../assets/google.png';
@@ -22,50 +19,42 @@ const companies = [
   { name: 'Flipkart', logo: flipkartLogo },
 ];
 
-// Array of alumni images
-const images = [
-  { name: 'Ashish', image: ashishImage },
-  { name: 'Aswin', image: aswinImage },
-  { name: 'Fida', image: fidaImage },
-  { name: 'Nishok', image: nishokImage },
-];
-
 // Array of alumni data with random company assignment
 const alumniData = [
   {
     name: 'Allen J',
     batch: 'Batch of 2014-2018',
-    image: ashishImage,
+    image: defaultAccountLogo,
     description: 'Software Engineer specializing in AI and Machine Learning.',
   },
   {
     name: 'Christo Varghese',
     batch: 'Batch of 2015-2019',
-    image: fidaImage,
+    image: defaultAccountLogo,
     description: 'Cloud Computing Expert and DevOps Engineer.',
   },
   {
     name: 'Catherine J',
     batch: 'Batch of 2015-2019',
-    image: aswinImage,
+    image: defaultAccountLogo,
     description: 'Blockchain Developer and Data Scientist.',
   },
   {
     name: 'Maria Rose',
     batch: 'Batch of 2018-2022',
-    image: nishokImage,
+    image: defaultAccountLogo,
     description: 'E-commerce Specialist and Backend Developer.',
   },
   {
     name: 'Anna Grace',
     batch: 'Batch of 2019-2023',
-    image: ashishImage,
+    image: defaultAccountLogo,
     description: 'Full Stack Developer with a passion for UX/UI Design.',
   },
   {
     name: 'Ruth',
     batch: 'Batch of 2019-2023',
-    image: fidaImage,
+    image: defaultAccountLogo,
     description: 'Mobile App Developer and Tech Enthusiast.',
   },
 ];

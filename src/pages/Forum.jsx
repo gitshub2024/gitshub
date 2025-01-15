@@ -20,6 +20,7 @@ const initialPosts = [
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     image: null,
     likes: 0,
+    likedByUser: false,
   },
   {
     id: 2,
@@ -30,6 +31,7 @@ const initialPosts = [
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     image: 'https://via.placeholder.com/500x150',
     likes: 0,
+    likedByUser: false,
   },
   {
     id: 3,
@@ -40,6 +42,7 @@ const initialPosts = [
       'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
     image: null,
     likes: 0,
+    likedByUser: false,
   },
 ];
 
@@ -64,6 +67,7 @@ function Forum() {
       content: newPostContent,
       image: newPostImage || null,
       likes: 0,
+      likedByUser: false,
     };
 
     setPosts([newPost, ...posts]);
@@ -71,12 +75,20 @@ function Forum() {
     setNewPostImage('');
   };
 
-  // Handler to like a post
+  // Handler to like/unlike a post
   const handleLike = (id) => {
     setPosts(
-      posts.map((post) =>
-        post.id === id ? { ...post, likes: post.likes + 1 } : post
-      )
+      posts.map((post) => {
+        if (post.id === id) {
+          const isLiked = post.likedByUser;
+          return {
+            ...post,
+            likes: isLiked ? post.likes - 1 : post.likes + 1,
+            likedByUser: !isLiked,
+          };
+        }
+        return post;
+      })
     );
   };
 
@@ -151,10 +163,13 @@ function Forum() {
               <div className="flex items-center justify-between">
                 <div className="flex space-x-6 text-[#ECDFCC]">
                   <button
-                    className="flex items-center hover:text-[#ECDFCC]/80 transition"
+                    className={`flex items-center transition ${
+                      post.likedByUser ? 'text-[#ECDFCC]' : 'hover:text-[#ECDFCC]/80'
+                    }`}
                     onClick={() => handleLike(post.id)}
                   >
-                    <span className="mr-1">❤️</span> Like ({post.likes})
+                    <span className="mr-1">{post.likedByUser ? '💔' : '❤️'}</span>{' '}
+                    {post.likedByUser ? 'Unlike' : 'Like'} ({post.likes})
                   </button>
                   <button className="flex items-center hover:text-[#ECDFCC]/80 transition">
                     <span className="mr-1">💬</span> Comment

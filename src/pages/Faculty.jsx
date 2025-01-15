@@ -2,60 +2,50 @@
 
 import React from 'react';
 
-// Import images
-import ashishImage from '../assets/ashish.jpg';
-import aswinImage from '../assets/aswin.jpg';
-import fidaImage from '../assets/fido.jpg';
-import nishokImage from '../assets/nishok.jpg';
-
-const images = [
-  { name: 'Ashish', image: ashishImage },
-  { name: 'Aswin', image: aswinImage },
-  { name: 'Fida', image: fidaImage },
-  { name: 'Nishok', image: nishokImage },
-];
+// Import default account logo
+import defaultAccountLogo from '../assets/default-avatar-icon-of-social-media-user-vector.jpg';
 
 const facultyData = [
   {
     name: 'Dr. John Doe',
     position: 'Professor, Computer Science',
     department: 'Department of Computer Science',
-    image: ashishImage,
+    image: defaultAccountLogo,
     description: 'Expert in Artificial Intelligence and Machine Learning.',
   },
   {
     name: 'Dr. Jane Smith',
     position: 'Assistant Professor, Electrical Engineering',
     department: 'Department of Electrical Engineering',
-    image: fidaImage,
+    image: defaultAccountLogo,
     description: 'Specializes in Renewable Energy Systems.',
   },
   {
     name: 'Dr. Emily Johnson',
     position: 'Associate Professor, Mechanical Engineering',
     department: 'Department of Mechanical Engineering',
-    image: aswinImage,
+    image: defaultAccountLogo,
     description: 'Focus on Robotics and Automation.',
   },
   {
     name: 'Dr. William Brown',
     position: 'Professor, Civil Engineering',
     department: 'Department of Civil Engineering',
-    image: nishokImage,
+    image: defaultAccountLogo,
     description: 'Expert in Structural Engineering.',
   },
   {
     name: 'Dr. Linda Davis',
     position: 'Professor, Mathematics',
     department: 'Department of Mathematics',
-    image: ashishImage,
+    image: defaultAccountLogo,
     description: 'Research in Applied Mathematics and Statistics.',
   },
   {
     name: 'Dr. Michael Wilson',
     position: 'Professor, Physics',
     department: 'Department of Physics',
-    image: fidaImage,
+    image: defaultAccountLogo,
     description: 'Specialist in Quantum Mechanics.',
   },
 ];
