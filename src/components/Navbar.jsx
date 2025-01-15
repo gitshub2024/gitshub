@@ -5,6 +5,8 @@ function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+
+  // If there is no user in localStorage, fallback to empty object
   const user = JSON.parse(localStorage.getItem('user') || '{}');
 
   const navItems = [
@@ -35,9 +37,10 @@ function Navbar() {
               key={item.label}
               to={item.path}
               className={`relative text-lg font-medium transition-colors duration-300
-                ${getActiveClass(item.path) 
-                  ? 'text-[#ECDFCC]' 
-                  : 'text-[#FFFFFF] hover:text-[#ECDFCC]'
+                ${
+                  getActiveClass(item.path)
+                    ? 'text-[#ECDFCC]'
+                    : 'text-[#FFFFFF] hover:text-[#ECDFCC]'
                 }`}
             >
               {item.label}
@@ -47,11 +50,15 @@ function Navbar() {
             </Link>
           ))}
 
+          {/* Profile Avatar & Dropdown */}
           <div className="relative">
-            <button onClick={() => setIsProfileOpen(!isProfileOpen)} className="flex items-center space-x-2 focus:outline-none">
+            <button
+              onClick={() => setIsProfileOpen(!isProfileOpen)}
+              className="flex items-center space-x-2 focus:outline-none"
+            >
               <div className="w-10 h-10 rounded-full bg-[#ECDFCC]/20 overflow-hidden">
                 <img
-                  src={user.avatar || "https://via.placeholder.com/40"}
+                  src={user.avatar || 'https://via.placeholder.com/40'}
                   alt="Profile"
                   className="w-full h-full object-cover"
                 />
@@ -60,18 +67,27 @@ function Navbar() {
 
             {isProfileOpen && (
               <div className="absolute right-0 mt-2 w-48 rounded-xl overflow-hidden bg-[#181C14]/80 backdrop-blur-lg shadow-lg ring-1 ring-black ring-opacity-5">
-                <div className="py-2">
-                  <div className="px-4 py-2 border-b border-[#697565]/40">
-                    <p className="text-[#ECDFCC] font-medium">{user.name}</p>
-                    <p className="text-[#FFFFFF] text-sm">{user.email}</p>
-                  </div>
-                  <button
-                    onClick={handleLogout}
-                    className="w-full text-left px-4 py-2 text-[#FFFFFF] hover:text-[#ECDFCC] hover:bg-[#181C14]/40 transition-colors duration-300"
-                  >
-                    Logout
-                  </button>
-                </div>
+                {/* Make user info block clickable */}
+                <button
+                  onClick={() => {
+                    setIsProfileOpen(false); 
+                    navigate('/profile'); 
+                  }}
+                  className="w-full text-left px-4 py-2 border-b border-[#697565]/40 
+                             hover:bg-[#181C14]/40 transition-colors duration-300"
+                >
+                  <p className="text-[#ECDFCC] font-medium">{user.name}</p>
+                  <p className="text-[#FFFFFF] text-sm">{user.email}</p>
+                </button>
+
+                <button
+                  onClick={handleLogout}
+                  className="w-full text-left px-4 py-2 text-[#FFFFFF] 
+                             hover:text-[#ECDFCC] hover:bg-[#181C14]/40 
+                             transition-colors duration-300"
+                >
+                  Logout
+                </button>
               </div>
             )}
           </div>
